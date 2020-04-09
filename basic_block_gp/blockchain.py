@@ -17,32 +17,35 @@ class Blockchain(object):
     def new_block(self, proof, previous_hash=None):
         """
         Create a new Block in the Blockchain
-
         A block should have:
         * Index
         * Timestamp
         * List of current transactions
         * The proof used to mine this block
         * The hash of the previous block
-
         :param proof: <int> The proof given by the Proof of Work algorithm
         :param previous_hash: (Optional) <str> Hash of previous Block
         :return: <dict> New Block
         """
 
         block = {
-            # TODO
+            'index': len(self.chain) + 1,
+            'timestamp': time(),
+            'transactions': self.current_transactions,
+            'proof': proof,
+            'previous_hash': previous_hash or self.hash(self.last_block)
         }
 
         # Reset the current list of transactions
+        self.current_transactions = []
         # Append the chain to the block
+        self.chain.append(block)
         # Return the new block
-        pass
+        return self.chain
 
     def hash(self, block):
         """
         Creates a SHA-256 hash of a Block
-
         :param block": <dict> Block
         "return": <str>
         """
@@ -56,8 +59,10 @@ class Blockchain(object):
         # or we'll have inconsistent hashes
 
         # TODO: Create the block_string
-
+        string_block = json.dumps(block, sort_keys=True)
         # TODO: Hash this string using sha256
+        hashed_str = hashlib.sha256(string_block.encode())
+
 
         # By itself, the sha256 function returns the hash in a raw string
         # that will likely include escaped characters.
@@ -66,7 +71,7 @@ class Blockchain(object):
         # easier to work with and understand
 
         # TODO: Return the hashed block string in hexadecimal format
-        pass
+        return hex(hashed_str)
 
     @property
     def last_block(self):
@@ -97,6 +102,7 @@ class Blockchain(object):
         :return: True if the resulting hash is a valid proof, False otherwise
         """
         # TODO
+        block_string = 
         pass
         # return True or False
 
